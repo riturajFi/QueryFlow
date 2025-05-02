@@ -1,129 +1,139 @@
-📊 NL-Query Platform
-Upload your database → Chat with your data → Get instant insights
-Built with Java (Spring Boot) backend + Next.js / TypeScript frontend + TurboRepo Monorepo.
+# 📊 NL-Query Platform
 
-✨ Features
-Authentication (OAuth2 / JWT)
+*Upload your database → Chat with your data → Get instant insights*  
+Built as a full-stack, cloud-native app with Java (Spring Boot) backend and Next.js/TypeScript frontend, organized in a TurboRepo monorepo.
 
-Projects: Create multiple projects to organize your data.
+---
 
-Chats: Each chat is tied to one Excel/CSV upload.
+## ✨ Features
 
-Data Upload: Smart file ingestion with automatic schema detection.
+- **Authentication**: OAuth2 / JWT  
+- **Projects**: Organize uploads into multiple projects  
+- **Chats**: One chat per Excel/CSV upload  
+- **Smart Ingestion**: Automatic schema inference & preview  
+- **Natural-Language Queries**: “Top sales last quarter?” → instant answers  
+- **Secure NL→SQL**: Parameterized SQL generated & executed safely  
+- **Realtime Updates**: Upload & query status via WebSocket (Socket.IO)  
+- **LLM-Powered Insights**: Text summaries + charts  
+- **Export**: CSV or Excel downloads  
+- **Cloud-Native**: AWS EKS, RDS, S3 + Kubernetes + Helm  
+- **CI/CD**: GitHub Actions for build, test, deploy  
 
-Natural-Language Queries: Ask questions like “Top sales last quarter?”
+---
 
-SQL Translation: Secure NL → SQL → Query execution.
+## 🏗️ Tech Stack
 
-Realtime Updates: Live upload and query progress via WebSocket (Socket.IO).
+| Layer             | Technology                                                                               |
+|-------------------|------------------------------------------------------------------------------------------|
+| **Frontend**      | Next.js (TypeScript), Tailwind CSS, Vercel Edge Functions                                |
+| **BFF / API**     | Node.js, Express.js, tRPC, GraphQL, Prisma                                               |
+| **Core Backend**  | Java 17+, Spring Boot 3 (WebFlux, Security, Batch, Cloud)                                |
+| **Databases**     | PostgreSQL, MongoDB, Redis                                                               |
+| **Storage**       | AWS S3                                                                                   |
+| **Realtime**      | Socket.IO (WebSocket Pub/Sub)                                                            |
+| **DevOps**        | Docker, Kubernetes (AWS EKS), Helm, GitHub Actions                                       |
+| **Observability** | Prometheus, Grafana, ELK Stack                                                           |
 
-Insights & Summaries: LLM-powered text summaries + visualizations.
+---
 
-Export: Download results as CSV or Excel.
+## 🧱 Monorepo Layout
 
-Cloud Native: Deployed on AWS (EKS, RDS, S3) using Kubernetes + Helm.
-
-CI/CD: GitHub Actions for automated build, test, deploy.
-
-🏗️ Tech Stack
-
-Layer	Tech
-Frontend	Next.js (TypeScript), Tailwind CSS, Vercel Edge Functions
-API Gateway (BFF)	Node.js, Express.js, tRPC, GraphQL, Prisma
-Core Backend	Java 17+, Spring Boot 3 (WebFlux, Security, Batch, Cloud)
-Data & Caching	PostgreSQL, MongoDB, Redis, AWS S3
-Real-time	Socket.IO (WebSocket Pub/Sub)
-DevOps	Docker, Kubernetes (AWS EKS), Helm, GitHub Actions
-Observability	Prometheus, Grafana, ELK Stack
-🧱 Monorepo Structure
-bash
-Copy
-Edit
+\`\`\`bash
 /apps
-  /frontend    → Next.js app
-  /bff         → Node.js API Gateway (tRPC/GraphQL)
+  ├── frontend    # Next.js + Tailwind UI
+  └── bff         # Node.js API Gateway (tRPC/GraphQL)
+
 /infra
-  /helm        → Helm charts for Kubernetes deployments
+  └── helm        # Kubernetes Helm charts
+
 /services
-  /auth        → Java microservice (Authentication)
-  /upload      → Java microservice (File upload & ingestion)
-  /etl         → Java microservice (Schema inference & ETL)
-  /query       → Java microservice (NL-to-SQL + query execution)
-  /insights    → Java microservice (Insights and summaries)
-🚀 Getting Started
-1. Prerequisites
-Node.js v18+
+  ├── auth        # Spring Boot (OAuth2 / JWT)
+  ├── upload      # Spring Batch → S3 ingestion
+  ├── etl         # Schema inference & ETL
+  ├── query       # NL→SQL translation & execution
+  └── insights    # Aggregates + LLM summaries
+\`\`\`
 
-JDK 17+
+---
 
-Docker
+## 🚀 Getting Started
 
-kubectl + Helm
+### 1. Prerequisites
 
-AWS CLI (optional for cloud deployment)
+- **Node.js** v18+  
+- **JDK** 17+  
+- **Docker** & **Docker Compose**  
+- **kubectl** + **Helm**  
+- **AWS CLI** (optional)
 
-2. Setup Monorepo
-bash
-Copy
-Edit
-# Clone repo
+---
+
+### 2. Clone & Install
+
+\`\`\`bash
 git clone https://github.com/yourusername/nl-query-platform.git
 cd nl-query-platform
 
-# Install frontend and BFF dependencies
+# Install frontend deps
 cd apps/frontend && npm install
+
+# Install BFF deps
 cd ../bff && npm install
 
-# Build Java microservices (example)
-cd services/auth && ./mvnw install
-3. Local Development
-bash
-Copy
-Edit
-# Start frontend (Next.js)
+# Build Java services
+cd ../../services/auth && ./mvnw clean install
+\`\`\`
+
+---
+
+### 3. Local Development
+
+\`\`\`bash
+# Frontend
 cd apps/frontend
-npm run dev
+npm run dev           # → http://localhost:3000
 
-# Start BFF (tRPC/Express)
+# API Gateway (BFF)
 cd ../bff
-npm run dev
+npm run dev           # → http://localhost:4000
 
-# Start Java microservices (example: auth)
-cd services/auth
+# Java microservices
+cd ../../services/auth
 ./mvnw spring-boot:run
-Frontend → http://localhost:3000
+# repeat for /upload, /etl, /query, /insights
+\`\`\`
 
-BFF → http://localhost:4000
+---
 
-Java services → on their respective ports
+### 4. (Optional) Docker Compose
 
-4. Docker Compose (optional local setup)
-Coming soon! (Compose file to run everything together.)
+_Compose file coming soon to spin up all services locally._
 
-🛡️ CI/CD Pipeline
-GitHub Actions:
+---
 
-Lint + Test Node.js apps
+## 🛡️ CI/CD Pipeline
 
-Build + Test Java services
+GitHub Actions workflows:
 
-Dockerize and push to AWS ECR
+1. **Lint & Test** Node.js apps  
+2. **Build & Test** Java services  
+3. **Dockerize** & push images to AWS ECR  
+4. **Helm Deploy** to AWS EKS  
 
-Deploy via Helm to AWS EKS
+---
 
-📈 Roadmap
- Monorepo bootstrapped (TurboRepo)
+## 📈 Roadmap
 
- Basic project / chat flows
+- ✅ Monorepo scaffolded (TurboRepo)  
+- ✅ Basic project & chat flows  
+- 🔄 Realtime collaboration  
+- 🔜 SSO / OAuth2 provider integration  
+- 🔜 Admin / monitoring dashboard  
+- 🔜 AI-driven chart suggestions  
 
- Realtime collaboration on chats
+---
 
- SSO / OAuth2 providers integration
+## 🤝 Contributing
 
- Admin dashboard for monitoring
-
- AI-based chart suggestions (future)
-
-🤝 Contributing
-Pull requests are welcome!
-Please open an issue first to discuss major changes.
+Pull requests welcome!  
+Please open an issue first to discuss significant changes.
